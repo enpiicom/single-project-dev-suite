@@ -74,6 +74,7 @@ define('WP_DEBUG_DISPLAY', false);
 if ( isset( $_SERVER['HTTP_HOST'] ) ) {
 	$http_protocol = isset($_SERVER['HTTPS']) && 'on' === $_SERVER['HTTPS'] ? 'https' : 'http';
 	define('WP_HOME', $http_protocol.'://'.$_SERVER['HTTP_HOST']);
+	define( 'WP_SITEURL', WP_HOME );
 }
 
 /** Absolute path to the WordPress directory. */

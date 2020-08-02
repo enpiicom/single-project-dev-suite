@@ -10,6 +10,8 @@ services:
       - "${NGINX_LOG_DIR}:/var/log/nginx"
       - "./vendor/johnpbloch/wordpress-core:/var/www/html"
       - "${DEV_SUITE_BASE}/wp-config.php:/var/www/html/wp-config.php"
+      # If you make plugin or theme development, uncomment this to mount the folder to plugin one
+      # - ".:/var/www/html/wp-content/plugins/your-plugin-name"
     ports:
       - "${NGINX_HTTP_EXPOSING_PORT}:80"
       - "${NGINX_HTTPS_EXPOSING_PORT}:443"
@@ -22,9 +24,18 @@ services:
       - "${DEV_SUITE_BASE}/shared:/shared"
       - "./vendor/johnpbloch/wordpress-core:/var/www/html"
       - "${DEV_SUITE_BASE}/wp-config.php:/var/www/html/wp-config.php"
+      # If you make plugin or theme development, uncomment this to mount the folder to plugin one
+      # - ".:/var/www/html/wp-content/plugins/your-plugin-name"
       # In case you want custom ini file
-#      - "${DEV_SUITE_BASE}/etc/php-fpm/php-custom.ini:/etc/php/7.4/fpm/conf.d/php-custom.ini"
+      # - "${DEV_SUITE_BASE}/etc/php-fpm/php-custom.ini:/etc/php/7.4/fpm/conf.d/php-custom.ini"
     environment:
+      - DB_HOST
+      - DB_USER
+      - DB_PASSWORD
+      - DB_NAME
+      - DB_CHARSET
+      - DB_COLLATE
+      - DB_TABLE_PREFIX
       - PHP_UPLOAD_MAX_FILEZISE=256M
       - PHP_POST_MAX_SIZE=256M
       - PHP_MEMORY_LIMIT=128M
@@ -34,6 +45,8 @@ services:
     image: mariadb:${MARIADB_TAG}
     container_name: "${PROJECT_NAME}_mariadb"
     stop_grace_period: 30s
+    ports:
+      - ${MARIADB_EXPOSING_PORT}:3306
     environment:
       MYSQL_ROOT_PASSWORD:
       MYSQL_DATABASE:
